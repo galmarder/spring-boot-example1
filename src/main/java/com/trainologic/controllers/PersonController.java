@@ -41,18 +41,7 @@ public class PersonController {
 	}
 	
 	
-//	@RequestMapping(value = "", method = RequestMethod.POST)
-	@ResponseBody
-	Person simpleaddPerson(@RequestBody Person person) {
-		person = personManagementService.addPerson(person);
-		return person;
-	}
 
-//	@RequestMapping(value = "", method = RequestMethod.GET)
-	@ResponseBody
-	List<Person> list() {
-		return personManagementService.get();
-	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	@ResponseBody
@@ -62,8 +51,16 @@ public class PersonController {
 				.map(person -> personToResource(person)).collect(Collectors.toList());
 	}
 	
-	
-	
+
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	PersonResource getPerson(@PathVariable String id) {
+		Person ret = personManagementService.getPersonById(id);
+		if (ret == null)
+			throw new EntityNotFound("person");
+		return personToResource(ret);
+	}
 
 	private PersonResource personToResource(Person person) {
 		Link self = linkTo(getClass()).slash(person.getId()).withSelfRel();
@@ -75,13 +72,30 @@ public class PersonController {
 		return resource;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ResponseBody
-	PersonResource getPerson(@PathVariable String id) {
-		Person ret = personManagementService.getPersonById(id);
-		if (ret == null)
-			throw new EntityNotFound("person");
-		return personToResource(ret);
+	Person simpleaddPerson(@RequestBody Person person) {
+		person = personManagementService.addPerson(person);
+		return person;
+	}
+
+	//	@RequestMapping(value = "", method = RequestMethod.GET)
+	@ResponseBody
+	List<Person> list() {
+		return personManagementService.get();
 	}
 
 }
