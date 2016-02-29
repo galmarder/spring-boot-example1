@@ -1,0 +1,20 @@
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+endpoints:
+  enabled: true
+  sensitive: false
+
+---
+spring:
+  profiles: mysql
+
+  datasource:
+    url: jdbc:mysql://localhost/sbdemo?autoReconnect=true
+    username: sbdemo
+    password: qwerty
+
+---
